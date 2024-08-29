@@ -32,7 +32,7 @@ public class ControllerTest {
                 if(path.contains("/v1/test1")) {
                     return new MockResponse().setResponseCode(200).setBody("#### response to /v1/test1");
                 } else if (path.contains("/v1/test2")) {
-                    return new MockResponse().setResponseCode(202).setBody("version=9");
+                    return new MockResponse().setResponseCode(202).setBody("version=8");
                 }else if(path.contains("/v1/test3")) {
                     return new MockResponse().setResponseCode(200).setBody(util.getRequestMessageFromPath("get_big.txt"));
                 } else if(path.contains("/v1/test4")) {
