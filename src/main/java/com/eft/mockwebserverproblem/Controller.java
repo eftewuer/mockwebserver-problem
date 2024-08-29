@@ -19,22 +19,11 @@ import java.util.function.Function;
 @Component
 public class Controller {
     final WebClient webClient;
-    long correlationId = 0L;
     long maxAttempts = 3;
     long delay = 5;
 
     public Controller(WebClient webClient) {
         this.webClient = webClient;
-    }
-
-    public String send1GetRequest(String path) {
-        return  sendGet(path);
-    }
-
-    public String send3GetRequest(String path) {
-        sendGet(path);
-        sendGet(path);
-        return sendGet(path);
     }
 
     public String sendGet(String path) {
@@ -45,7 +34,6 @@ public class Controller {
         Mono<ResponseEntity<String>> monoResp =
                 webClient.get()
                         .uri(url)
-                        .header("X-Correlation-ID", getNextId())
                         .retrieve()
                         .onStatus(HttpStatusCode::is5xxServerError, exceptionMapper(url, method))
                         .toEntity(String.class)
@@ -66,7 +54,6 @@ public class Controller {
         Mono<ResponseEntity<String>> monoResp =
                 webClient.post()
                         .uri(url)
-                        .header("X-Correlation-ID", getNextId())
                         .retrieve()
                         .onStatus(HttpStatusCode::is5xxServerError, exceptionMapper(url, method))
                         .toEntity(String.class)
@@ -84,14 +71,5 @@ public class Controller {
                 .map(error -> new RuntimeException(
                         String.format("#### Failed to send request %s to uri %s", method, uri)
                 ));
-    }
-
-    String getNextId() {
-        if(correlationId == Long.MAX_VALUE) {
-            correlationId = 0L;
-        }
-
-        correlationId++;
-        return Long.toString(correlationId);
     }
 }

@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ControllerTest {
@@ -71,13 +70,13 @@ public class ControllerTest {
 
     @Test
     void test3Gets2Posts() {
-        //controller.sendGet("/v1/test1");
-        //controller.sendPost("/v1/test2");
-        //controller.sendGet("/v1/test2");
-        //controller.sendPost("/v1/test3");
+        System.err.println("#### Sending GET");
         controller.sendGet("/v1/test4");
-        String s = controller.sendPost("/v1/post");
-        assertNotNull(s);
+
+        System.err.println("#### Sending POST");
+        String sPost = controller.sendPost("/v1/post");
+        assertNotNull(sPost);
+        assertTrue(sPost.startsWith("Lorem ipsum odor amet, consectetuer adipiscing elit."));
     }
 
 }
